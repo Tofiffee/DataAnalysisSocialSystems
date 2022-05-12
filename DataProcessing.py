@@ -14,10 +14,7 @@ def ReadData():
 
     return df
 
-
-def main():
-    df = ReadData()
-
+def DataPrepariation(df):
     casu = df.columns.values.tolist()
     casu_1 = [x for x in casu if 'erst' in x]
     casu_2 = [x for x in casu if 'danach' in x]
@@ -33,11 +30,15 @@ def main():
     for j in casu_2:
         y_casu_2.append(df[f'{j}'])
 
-    print(y_casu_1)
+    return [x_axis, y_casu_1, y_casu_2]
 
-    plotting_plot(x_axis, y_casu_1, y_casu_2)
-    
-    print(x_axis)
+
+def main():
+    df = ReadData()
+    data_list = DataPrepariation(df)
+    plotting_plot(data_list[0], data_list[1], data_list[2])
+    print(df.index.tolist())
+
 
 if __name__=='__main__':
     main()
