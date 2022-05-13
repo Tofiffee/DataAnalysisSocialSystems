@@ -20,8 +20,12 @@ def dfProcessingSingle(filename):
 
     df['bee1_r+1'] = df['bee1_r+1']/22.35
     df['bee1_r'] = df['bee1_r']/22.35
+    df['angle_grad'] = abs(df['bee1_p+1'] - df['bee1_p']) * (180/math.pi)
+    
+    df.drop(df.tail(1).index, inplace=True)
+    df['angle_grad'] = df['angle_grad'].apply(lambda x: 360 - x if x > 200 else x)
 
-    df['distancePerFrame'] = ((2 * math.pi * df['bee1_r'] * (df['bee1_p']/360)) + (2 * math.pi * df['bee1_r+1'] * (df['bee1_p+1']/360)))/2
+    df['distancePerFrame'] = ((2 * math.pi * df['bee1_r'] * (df['angle_grad']/360)) + (2 * math.pi * df['bee1_r+1'] * (df['angle_grad']/360)))/2
 
     df['distancePerSec'] = df['distancePerFrame']/0.2
 
