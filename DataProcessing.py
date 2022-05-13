@@ -1,7 +1,6 @@
 from plotting_Casu1 import plotting_plot
 
 import pandas as pd
-import matplotlib.pyplot as plt
 
 def ReadData(): 
     """
@@ -33,8 +32,13 @@ def DataPrepariation(df):
     return [x_axis, y_casu_1, y_casu_2]
 
 def CalcMean(df):
-    df_erst = df[['erst_A1', 'erst_A2',	'erst_A3', 'erst_A4', 'erst_A5', 'erst_A6', 'erst_A7', 'erst_B1', 'erst_B2', 'erst_B3', 'erst_B4', 'erst_B5', 'erst_B6', 'erst_B7',	'erst_C1', 'erst_C2', 'erst_C3', 'erst_C4']]
-    df_danach = df[['danach_A1', 'danach_A2',	'danach_A3', 'danach_A4', 'danach_A5', 'danach_A6', 'danach_A7', 'danach_B1', 'danach_B2', 'danach_B3', 'danach_B4', 'danach_B5', 'danach_B6', 'danach_B7',	'danach_C1', 'danach_C2', 'danach_C3', 'danach_C4']]
+    df_erst = df[['erst_A1', 'erst_A2',	'erst_A3', 'erst_A4', 'erst_A5', 'erst_A6', 
+        'erst_A7', 'erst_B1', 'erst_B2', 'erst_B3', 'erst_B4', 'erst_B5', 'erst_B6', 
+        'erst_B7',	'erst_C1', 'erst_C2', 'erst_C3', 'erst_C4']]
+    df_danach = df[['danach_A1', 'danach_A2',	'danach_A3', 'danach_A4', 'danach_A5',
+        'danach_A6', 'danach_A7', 'danach_B1', 'danach_B2', 'danach_B3', 'danach_B4', 
+        'danach_B5', 'danach_B6', 'danach_B7',	'danach_C1', 'danach_C2', 'danach_C3', 
+        'danach_C4']]
     
     df_erst['mean'] = df_erst.mean(axis=1)
     df_danach['mean'] = df_danach.mean(axis=1)
