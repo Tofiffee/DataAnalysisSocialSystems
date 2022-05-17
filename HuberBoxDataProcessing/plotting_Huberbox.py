@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import pandas as pd
 
 import os
 
@@ -19,3 +20,17 @@ def plot_speed_single(x_axis, data, filename):
         plt.plot(x_axis, data[i]['distancePerSec'], color='k', linewidth=1)
         
     plt.savefig(os.path.join(path, 'graphs', filename))
+
+path = os.path.dirname(os.path.realpath(__file__))
+
+number = 0
+
+for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees')):
+    number += 1
+    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', filename))
+
+    fig1, ax = plt.subplots(figsize=(20, 10))
+
+    plt.plot(df['second'], df['distBees'])
+
+    plt.savefig(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', f'{number}'))

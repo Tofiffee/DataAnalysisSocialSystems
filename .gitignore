@@ -1,6 +1,4 @@
 venv/
 .vscode
-graphs/*
-data/OneBee/*
-data/TwoBees/*
-data/ThreeBees/*
+data
+__pycache__
