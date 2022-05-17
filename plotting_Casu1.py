@@ -15,7 +15,7 @@ def plotting_plot(x_axis, y_casu_1, y_casu_2, mean_casu_1, mean_casu_2):
 
     ax.set_xlim(10, 960)
     ax.set_ylim(0, 10)
-    ax.xaxis.set_major_locator(MultipleLocator(10))
+    ax.xaxis.set_major_locator(MultipleLocator(60))
 
     for i in y_casu_1:
         plt.plot(x_axis, i, color='red', alpha=0.5, linewidth=0.5, linestyle=(0, (5, 5)))

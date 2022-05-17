@@ -1,18 +1,16 @@
 from ctypes.wintypes import tagRECT
-import multiprocessing
 from matplotlib.pyplot import axis, plot
 import pandas as pd
 import os
 import numpy as np
 import math
 import scipy.stats as stats
-from multiprocessing import Process, Value
 
 pxtocm = 22.35
 
 from plotting_Huberbox import plot_speed_single
 
-def dfProcessingSingle(filename: str):
+def dfProcessingSingle(filename: str, number):
     path = os.path.dirname(os.path.realpath(__file__))
 
     df = pd.read_csv(os.path.join(path, 'data', 'OneBee', filename))
@@ -38,9 +36,9 @@ def dfProcessingSingle(filename: str):
     df['distancePerSec'] = df['distancePerSec'].apply(lambda x: 0 if x <= 0.35 else x)
     df = df[:-1]
 
-    return df[['datetime_utc', 'second', 'angleGrad', 'distancePerSec']]
+    df.to_csv(os.path.join(path, 'data', 'processedData', 'OneBee', f'{filename}_processed_{number}'))  
 
-def dfProcessingTwo(filename: str):
+def dfProcessingTwo(filename: str, number):
     path = os.path.dirname(os.path.realpath(__file__))
 
     df = pd.read_csv(os.path.join(path, 'data', 'TwoBees', filename))
@@ -75,9 +73,9 @@ def dfProcessingTwo(filename: str):
 
     df = df[:-1]
 
-    return df[['datetime_utc', 'second', 'distancePerSec1', 'distancePerSec2', 'meanSpeed']]
+    df.to_csv(os.path.join(path, 'data', 'processedData', 'TwoBees', f'{filename}_processed_{number}'))  
 
-def dfProcessingThree(filename: str):
+def dfProcessingThree(filename: str, number):
     '''
     Read in the data from the folder ThreeBees and converts them to calcualte the speed per second of the individual bees
     '''
@@ -124,7 +122,7 @@ def dfProcessingThree(filename: str):
 
     df = df[:-1]
 
-    return df[['datetime_utc', 'second', 'distancePerSec1', 'distancePerSec2', 'distancePerSec3', 'meanSpeed']]
+    df.to_csv(os.path.join(path, 'data', 'processedData', 'ThreeBees', f'{filename}_prcessing_{number}'))  
 
 def calcDistanceAngle(rad1, rad2):
     angle = abs(rad2 - rad1)
@@ -134,7 +132,7 @@ def calcDistanceAngle(rad1, rad2):
     elif angle < math.pi:
         return angle
 
-def distanceTwo(filename):
+def distanceTwo(filename, number):
     path = os.path.dirname(os.path.realpath(__file__))
 
     df = pd.read_csv(os.path.join(path, 'data', 'TwoBees', filename))
@@ -147,10 +145,10 @@ def distanceTwo(filename):
 
     df['distBees'] = ((2 * math.pi * df['bee1_r'] * (df['angleDistGrad']/360)) + (2 * math.pi * df['bee2_r'] * (df['angleDistGrad']/360)))/2
     
-    return df[['second', 'angleDistGrad', 'distBees']]    
+    df.to_csv(os.path.join(path, 'data', 'processedData', 'TwoBees', f'{filename}_distance_{number}'))    
 
 
-def distanceThree(filename):
+def distanceThree(filename, number):
     path = os.path.dirname(os.path.realpath(__file__))
 
     df = pd.read_csv(os.path.join(path, 'data', 'ThreeBees', filename))
@@ -174,127 +172,51 @@ def distanceThree(filename):
     
     df['meanDist'] = (df['distBees1_2'] + df['distBees1_3'] + df['distBees2_3'])/3
 
-    return df[['datetime_utc','second','distBees1_2', 'distBees1_3', 'distBees2_3', 'meanDist']]
+    df.to_csv(os.path.join(path, 'data', 'processedData', 'ThreeBees', f'{filename}_distance_{number}'))
 
-def calcSingle():
+def main():
     path = os.path.dirname(os.path.realpath(__file__))
-    
+
     list_one_speed_26 = []
     list_one_speed_36 = []
-
-    for filename in os.listdir(os.path.join(path, 'data', 'OneBee')):
-        if 'deg26' in filename:
-            df_speed = dfProcessingSingle(filename)
-            list_one_speed_26.append(df_speed['distancePerSec'].mean())
-        elif 'deg36' in filename:
-            df_speed = dfProcessingSingle(filename)
-            list_one_speed_36.append(df_speed['distancePerSec'].mean())
-
-    return list_one_speed_26, list_one_speed_36
-
-def calcTwo():
-    path = os.path.dirname(os.path.realpath(__file__))
 
     list_two_speed_26 = []
     list_two_speed_36 = []
     list_two_dist_26 = []
     list_two_dist_36 = []
 
-    for filename in os.listdir(os.path.join(path, 'data', 'TwoBees')):
-        if 'deg26' in filename:
-            df_speed = dfProcessingTwo(filename)
-            df_dist = distanceTwo(filename)
-            list_two_speed_26.append(df_speed['meanSpeed'].mean())
-            list_two_dist_26.append(df_dist['distBees'])
-        elif 'deg36' in filename:
-            df_speed = dfProcessingTwo(filename)
-            df_dist = distanceTwo(filename)
-            list_two_speed_36.append(df_speed['meanSpeed'].mean())
-            list_two_dist_36.append(df_dist['distBees'])
-
-    return list_two_speed_26, list_two_speed_36, list_two_dist_26, list_two_dist_36
-
-def calcThree():
-    path = os.path.dirname(os.path.realpath(__file__))
-
     list_three_speed_26 = []
     list_three_speed_36 = []
     list_three_dist_26 = []
     list_three_dist_36 = []
 
-    for filename in os.listdir(os.path.join(path, 'data', 'ThreeBees')):
+    number = 0
+
+    for filename in os.listdir(os.path.join(path, 'data', 'OneBee')):
+        number += 1
+        print(number)
         if 'deg26' in filename:
-            df_speed = dfProcessingThree(filename)
-            df_dist = distanceThree(filename)
-            list_three_speed_26.append(df_speed['meanSpeed'].mean())
-            list_three_dist_26.append(df_dist['meanDist'])
+            dfProcessingSingle(filename, number)
         elif 'deg36' in filename:
-            df_speed = dfProcessingThree(filename)
-            df_dist = distanceThree(filename)
-            list_three_speed_36.append(df_speed['meanSpeed'].mean())
-            list_three_dist_36.append(df_dist['meanDist'])
+            dfProcessingSingle(filename, number)
 
-def main():
-    # path = os.path.dirname(os.path.realpath(__file__))
+    for filename in os.listdir(os.path.join(path, 'data', 'TwoBees')):
+        number += 1
+        if 'deg26' in filename:
+            dfProcessingTwo(filename, number)
+            distanceTwo(filename, number)
+        elif 'deg36' in filename:
+            dfProcessingTwo(filename, number)
+            distanceTwo(filename, number)
 
-    # list_one_speed_26 = []
-    # list_one_speed_36 = []
-
-    # list_two_speed_26 = []
-    # list_two_speed_36 = []
-    # list_two_dist_26 = []
-    # list_two_dist_36 = []
-
-    # list_three_speed_26 = []
-    # list_three_speed_36 = []
-    # list_three_dist_26 = []
-    # list_three_dist_36 = []
-
-    # for filename in os.listdir(os.path.join(path, 'data', 'OneBee')):
-    #     if 'deg26' in filename:
-    #         df_speed = dfProcessingSingle(filename)
-    #         list_one_speed_26.append(df_speed['distancePerSec'].mean())
-    #     elif 'deg36' in filename:
-    #         df_speed = dfProcessingSingle(filename)
-    #         list_one_speed_36.append(df_speed['distancePerSec'].mean())
-
-    # for filename in os.listdir(os.path.join(path, 'data', 'TwoBees')):
-    #     if 'deg26' in filename:
-    #         df_speed = dfProcessingTwo(filename)
-    #         df_dist = distanceTwo(filename)
-    #         list_two_speed_26.append(df_speed['meanSpeed'].mean())
-    #         list_two_dist_26.append(df_dist['distBees'])
-    #     elif 'deg36' in filename:
-    #         df_speed = dfProcessingTwo(filename)
-    #         df_dist = distanceTwo(filename)
-    #         list_two_speed_36.append(df_speed['meanSpeed'].mean())
-    #         list_two_dist_36.append(df_dist['distBees'])
-
-    # for filename in os.listdir(os.path.join(path, 'data', 'ThreeBees')):
-    #     if 'deg26' in filename:
-    #         df_speed = dfProcessingThree(filename)
-    #         df_dist = distanceThree(filename)
-    #         list_three_speed_26.append(df_speed['meanSpeed'].mean())
-    #         list_three_dist_26.append(df_dist['meanDist'])
-    #     elif 'deg36' in filename:
-    #         df_speed = dfProcessingThree(filename)
-    #         df_dist = distanceThree(filename)
-    #         list_three_speed_36.append(df_speed['meanSpeed'].mean())
-    #         list_three_dist_36.append(df_dist['meanDist'])
-    ret_value1 = multiprocessing.Value('d', 0.0, lock=False)
-    P1 = Process(target=calcSingle)
-    ret_value2 = multiprocessing.Value('d', 0.0, lock=False)
-    P2 = Process(target=calcTwo)
-    ret_value3 = multiprocessing.Value('d', 0.0, lock=False)
-    P3 = Process(target=calcThree)
-
-    list_one_speed_26, list_one_speed_36 = P1.start()
-    list_two_speed_26,list_two_speed_36, list_two_dist_26, list_two_dist_36 = P2.start()
-    list_three_speed_26, list_three_speed_36, list_three_dist_26, list_three_dist_36 = P3.start()
-
-    P1.join()
-    P2.join()
-    P3.join()
+    for filename in os.listdir(os.path.join(path, 'data', 'ThreeBees')):
+        number += 1
+        if 'deg26' in filename:
+            dfProcessingThree(filename, number)
+            distanceThree(filename, number)
+        elif 'deg36' in filename:
+            dfProcessingThree(filename, number)
+            distanceThree(filename, number)
 
     lists = [list_one_speed_26, list_one_speed_36, list_two_speed_26, list_two_speed_36, list_three_speed_26, list_three_speed_36]
 
