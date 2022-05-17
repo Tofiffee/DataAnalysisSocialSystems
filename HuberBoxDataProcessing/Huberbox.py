@@ -1,12 +1,14 @@
-from OneBee import dfProcessingSingle
-from TwoBees import dfProcessingTwo
-from ThreeBees import dfProcessingThree
+import os
 
 from ctypes.wintypes import tagRECT
 from matplotlib.pyplot import axis, plot
 import pandas as pd
-import os
 import scipy.stats as stats
+
+from OneBee import dfProcessingSingle
+from TwoBees import dfProcessingTwo
+from ThreeBees import dfProcessingThree
+
 
 pxtocm = 22.35
 
@@ -34,6 +36,29 @@ def main():
             dfProcessingThree(filename, number, '26Degree')
         elif 'deg36' in filename:
             dfProcessingThree(filename, number, '36Degree')
+
+    together_two_26 = []
+    together_two_36 = []
+
+    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '26Degree')):
+        df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '26Degree', filename), sep=';', encoding='utf-8')
+        try:
+            together_two_26.append(df['BeesTogether'].sum()*0.2)
+        except KeyError:
+            print(filename)
+    
+    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree')):
+        df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree', filename), sep=';', encoding='utf-8')
+        try:
+            together_two_36.append(df['BeesTogether'].sum()*0.2)
+        except KeyError:
+            print(filename)
+
+    print(together_two_26)
+    print(together_two_36)
+
+    print(stats.ks_2samp(together_two_26, together_two_36, alternative='greater', mode='exact'))
+    print(stats.mannwhitneyu(together_two_26, together_two_36, alternative='less'))
 
 if __name__ == '__main__':
     main()

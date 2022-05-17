@@ -43,7 +43,7 @@ def dfProcessingTwo(filename: str, number, deg):
     df['BeeNotMove2'] = df['distancePerSec2'].apply(lambda x: 1 if x <= 0.35 else 0)
     df['meanSpeed'] = (df['distancePerSec1'] + df['distancePerSec2'])/2
 
-    df['BeesClose'] = df['distBees'].apply(lambda x: 1 if x <=2.2 else 0)
+    df['BeesTogether'] = df['distBees'].apply(lambda x: 1 if x <=2.2 else 0)
     
     df = df[:-1]
 
