@@ -44,6 +44,10 @@ def dfProcessingTwo(filename: str, number, deg):
     df['meanSpeed'] = (df['distancePerSec1'] + df['distancePerSec2'])/2
 
     df['BeesTogether'] = df['distBees'].apply(lambda x: 1 if x <=2.2 else 0)
+    df['socialTogether'] = df.apply(
+        lambda x: socialTogether(x['BeeNotMove1'], x['BeeNotMove2'], x['BeesTogether']),
+        axis=1
+        )
     
     df = df[:-1]
 
@@ -59,3 +63,9 @@ def calcDistanceAngle(rad1, rad2):
             return (2*math.pi) - angle
         elif angle < math.pi:
             return angle
+
+def socialTogether(BeeNotMove1, BeeNotMove2, BeesTogether):
+    if BeeNotMove1 == 1 and BeeNotMove2 == 1 and BeesTogether == 1:
+        return 1
+    else:
+        return 0
