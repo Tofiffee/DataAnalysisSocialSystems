@@ -49,6 +49,7 @@ def dfProcessingTwo(filename: str, number, deg):
         axis=1
         )
     
+    filename = filename.split('.')[0]
     df = df[:-1]
 
     df.to_csv(os.path.join(

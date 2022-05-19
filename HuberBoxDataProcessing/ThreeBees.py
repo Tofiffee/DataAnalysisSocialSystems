@@ -67,8 +67,12 @@ def dfProcessingThree(filename: str, number, deg):
 
     df['meanDist'] = (df['distBees1_2'] + df['distBees1_3'] + df['distBees2_3'])/3
     df['BeesClose1_2_3'] = df['meanDist'].apply(lambda x: 1 if x <= 2.2 else 0)
+    df['socialTogether'] = df.apply(lambda x: socialTogether(x['BeeNotMove1'], x['BeeNotMove2'], 
+    x['BeeNotMove3'], x['BeesClose1_2_3']), axis=1)
 
     df = df[:-1]
+
+    filename = filename.split('.')[0]
 
     df.to_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees',  f'{deg}', f'{filename}_processed_{number}.csv'),
     sep=';', encoding='utf-8')
@@ -80,3 +84,9 @@ def calcDistanceAngle(rad1, rad2):
             return (2*math.pi) - angle
         elif angle < math.pi:
             return angle
+
+def socialTogether(BeeNotMove1, BeeNotMove2, BeeNotMove3, BeesClose1_2_3):
+    if BeeNotMove1 == 1 and BeeNotMove2 == 1 and BeeNotMove3 == 1 and BeesClose1_2_3 == 1:
+        return 1
+    else:
+        return 0

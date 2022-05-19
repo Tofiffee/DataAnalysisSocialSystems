@@ -33,6 +33,8 @@ def dfProcessingSingle(filename: str, number, deg):
     df['BeeNotMove'] = df['distancePerSec'].apply(lambda x: 1 if x <= 0.35 else 0)
     df = df[:-1]
 
+    filename = filename.split('.')[0]
+
     df.to_csv(os.path.join(
         os.path.dirname(path), 'data', 'processedData', 'OneBee', f'{deg}', f'{filename}_processed_{number}.csv'
         ),

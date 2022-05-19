@@ -4,11 +4,11 @@ import pandas as pd
 import scipy.stats as stats
 import numpy as np
 
+import matplotlib.pyplot as plt
+
+from plotting_Huberbox import boxplotTime
+
 path = os.path.dirname(os.path.realpath(__file__))
-
-
-together_two_36 = []
-
 
 def claculationsTwo26(filename):
     together_two_26 = []
@@ -20,7 +20,7 @@ def claculationsTwo26(filename):
     except KeyError:
         print(filename)
 
-    socialContact = df['socialTogether'].tolist()
+    socialContact = df['socialTogether'].to_numpy()
     counter = 0
     for i in socialContact:
         if i == 1:
@@ -31,8 +31,10 @@ def claculationsTwo26(filename):
                 counter = 0
             elif counter == 0:
                 pass
-    socialTogether_two_26 = np.array(socialTogether_two_26)
-    socialTogether_two_26 = socialTogether_two_26 * 0.2
+
+    socialTogether_two_26 = np.array(socialTogether_two_26) * 0.2
+    socialTogether_two_26 = np.setdiff1d(socialTogether_two_26, np.array([0.2, 0.4, 0.6, 0.8]))
+
     return socialTogether_two_26
 
 def claculationsTwo36(filename):
@@ -49,7 +51,7 @@ def claculationsTwo36(filename):
     except KeyError:
         print(filename)
 
-    socialContact = df['socialTogether'].tolist()
+    socialContact = df['socialTogether'].to_numpy()
     counter = 0
     for i in socialContact:
         if i == 1:
@@ -61,46 +63,78 @@ def claculationsTwo36(filename):
             elif counter == 0:
                 pass
 
-    socialTogether_two_36 = np.array(socialTogether_two_36)
-    socialTogether_two_36 = socialTogether_two_36 * 0.2
+    socialTogether_two_36 = np.array(socialTogether_two_36) * 0.2
+    socialTogether_two_36 = np.setdiff1d(socialTogether_two_36, np.array([0.2, 0.4, 0.6, 0.8]))
+
     return socialTogether_two_36
 
+def claculationsThree26(filename):
+    together_three_26 = []
+    socialTogether_three_26 = []
 
-np_array_26 = np.array([])
-np_array_36 = np.array([])
+    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees', '26Degree', filename), 
+    sep=';', 
+    encoding='utf-8'
+    )
+    
+    try:
+        together_three_26.append(df['BeesClose1_2_3'].sum()*0.2)
+    except KeyError:
+        print(filename)
 
+    try:
+        socialContact = df['socialTogether'].to_numpy()
+    except KeyError:
+        print(filename)
+    counter = 0
+    
+    for i in socialContact:
+        if i == 1:
+            counter += 1
+        elif i == 0:
+            if counter != 0:
+                socialTogether_three_26.append(counter)
+                counter = 0
+            elif counter == 0:
+                pass
 
-for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '26Degree')):
-    array = claculationsTwo26(filename)
-    np_array_26 = np.hstack((np_array_26,array))
+    socialTogether_three_26 = np.array(socialTogether_three_26) * 0.2
+    socialTogether_three_26 = np.setdiff1d(socialTogether_three_26, np.array([0.2, 0.4, 0.6, 0.8]))
 
-for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree')):
-    array = claculationsTwo36(filename)
-    np_array_36 = np.hstack((np_array_36, array))
+    return socialTogether_three_26
 
-print(np_array_26)
-print(np_array_36)        
+def claculationsThree36(filename):
+    together_three_36 = []
+    socialTogether_three_36 = []
 
+    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees', '36Degree', filename), 
+    sep=';', 
+    encoding='utf-8'
+    )
+    
+    try:
+        together_three_36.append(df['BeesClose1_2_3'].sum()*0.2)
+    except KeyError:
+        print(filename)
 
+    try:
+        socialContact = df['socialTogether'].to_numpy()
+    except KeyError:
+        print(filename)
+    
+    counter = 0
+    
+    for i in socialContact:
+        if i == 1:
+            counter += 1
+        elif i == 0:
+            if counter != 0:
+                socialTogether_three_36.append(counter)
+                counter = 0
+            elif counter == 0:
+                pass
 
+    socialTogether_three_36 = np.array(socialTogether_three_36) * 0.2
+    socialTogether_three_36 = np.setdiff1d(socialTogether_three_36, np.array([0.2, 0.4, 0.6, 0.8]))
 
-
-
-
-
-
-
-
-
-# for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree')):
-#     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree', filename), sep=';', encoding='utf-8')
-#     try:
-#         together_two_36.append(df['BeesTogether'].sum()*0.2)
-#     except KeyError:
-#         print(filename)
-
-# print(together_two_26)
-# print(together_two_36)
-
-# print(stats.ks_2samp(together_two_26, together_two_36, alternative='greater', mode='exact'))
-# print(stats.mannwhitneyu(together_two_26, together_two_36, alternative='less'))
+    return socialTogether_three_36
