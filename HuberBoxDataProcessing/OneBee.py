@@ -21,6 +21,7 @@ def dfProcessingSingle(filename: str, number, deg):
     df['bee1_r+1'] = df['bee1_r+1']/pxtocm
     df['bee1_r'] = df['bee1_r']/pxtocm
     df['angleGrad'] = abs(df['bee1_p+1'] - df['bee1_p']) * (180/math.pi)
+    df['angleGrad'] = df['angleGrad'].apply(lambda x: 360-x if x > 180 else x)
     
     df.drop(df.tail(1).index, inplace=True)
     df['angleGrad'] = df['angleGrad'].apply(lambda x: 360 - x if x > 200 else x)
@@ -31,6 +32,7 @@ def dfProcessingSingle(filename: str, number, deg):
     df['distancePerSec'] = df['distancePerFrame']/0.2
 
     df['BeeNotMove'] = df['distancePerSec'].apply(lambda x: 1 if x <= 0.35 else 0)
+    df['distancePerSec'] = df['distancePerSec'].apply(lambda x: 0 if x <= 0.35 else x)
     df = df[:-1]
 
     filename = filename.split('.')[0]

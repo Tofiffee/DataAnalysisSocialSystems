@@ -27,6 +27,8 @@ def dfProcessingTwo(filename: str, number, deg):
 
     df['angleGrad1'] = abs(df['bee1_p+1'] - df['bee1_p']) * (180/math.pi)
     df['angleGrad2'] = abs(df['bee2_p+1'] - df['bee2_p']) * (180/math.pi)
+    df['angleGrad1'] = df['angleGrad1'].apply(lambda x: 360-x if x > 180 else x)
+    df['angleGrad2'] = df['angleGrad2'].apply(lambda x: 360-x if x > 180 else x)
 
     df['angleDistance'] = df.apply(lambda x: calcDistanceAngle(x['bee1_p'], x['bee2_p']), axis=1)
     df['angleDistGrad'] = df['angleDistance'].apply(lambda x: x * (180/math.pi))
@@ -42,6 +44,8 @@ def dfProcessingTwo(filename: str, number, deg):
     df['BeeNotMove1'] = df['distancePerSec1'].apply(lambda x: 1 if x <= 0.35 else 0)
     df['BeeNotMove2'] = df['distancePerSec2'].apply(lambda x: 1 if x <= 0.35 else 0)
     df['meanSpeed'] = (df['distancePerSec1'] + df['distancePerSec2'])/2
+    df['distancePerSec1'] = df['distancePerSec1'].apply(lambda x: 0 if x <= 0.35 else x)
+    df['distancePerSec2'] = df['distancePerSec2'].apply(lambda x: 0 if x <= 0.35 else x)
 
     df['BeesTogether'] = df['distBees'].apply(lambda x: 1 if x <=2.2 else 0)
     df['socialTogether'] = df.apply(

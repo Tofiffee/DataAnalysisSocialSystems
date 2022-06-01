@@ -34,6 +34,9 @@ def dfProcessingThree(filename: str, number, deg):
     df['angleGrad1'] = abs(df['bee1_p+1'] - df['bee1_p']) * (180/math.pi)
     df['angleGrad2'] = abs(df['bee2_p+1'] - df['bee2_p']) * (180/math.pi)
     df['angleGrad3'] = abs(df['bee3_p+1'] - df['bee3_p']) * (180/math.pi)
+    df['angleGrad1'] = df['angleGrad1'].apply(lambda x: 360-x if x > 180 else x)
+    df['angleGrad2'] = df['angleGrad2'].apply(lambda x: 360-x if x > 180 else x)
+    df['angleGrad3'] = df['angleGrad3'].apply(lambda x: 360-x if x > 180 else x)
 
     df['angleDistance1_2'] = df.apply(lambda x: calcDistanceAngle(x['bee1_p'], x['bee2_p']), axis=1)
     df['angleDistGrad1_2'] = df['angleDistance1_2'].apply(lambda x: x * (180/math.pi))
@@ -64,6 +67,11 @@ def dfProcessingThree(filename: str, number, deg):
     df['BeeNotMove1'] = df['distancePerSec1'].apply(lambda x: 1 if x <= 0.35 else 0)
     df['BeeNotMove2'] = df['distancePerSec2'].apply(lambda x: 1 if x <= 0.35 else 0)
     df['BeeNotMove3'] = df['distancePerSec3'].apply(lambda x: 1 if x <= 0.35 else 0)
+
+    df['distancePerSec1'] = df['distancePerSec1'].apply(lambda x: 0 if x <= 0.35 else x)
+    df['distancePerSec2'] = df['distancePerSec2'].apply(lambda x: 0 if x <= 0.35 else x)
+    df['distancePerSec3'] = df['distancePerSec3'].apply(lambda x: 0 if x <= 0.35 else x)
+
 
     df['meanDist'] = (df['distBees1_2'] + df['distBees1_3'] + df['distBees2_3'])/3
     df['BeesClose1_2_3'] = df['meanDist'].apply(lambda x: 1 if x <= 2.2 else 0)
