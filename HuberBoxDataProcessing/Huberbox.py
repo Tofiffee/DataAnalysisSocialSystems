@@ -1,45 +1,18 @@
 import os
 
-from ctypes.wintypes import tagRECT
-from matplotlib.pyplot import axis, plot
-import pandas as pd
 import scipy.stats as stats
 import numpy as np
 
-from OneBee import dfProcessingSingle
-from TwoBees import dfProcessingTwo
-from ThreeBees import dfProcessingThree
 from HuberboxCalculationsTime import *
 from plotting_Huberbox import boxplot
 from HuberboxCalculationsSpeed import *
 
+def CalcSocialTogether() ->  np.ndarray:
+    """calculates all the social times for all the files in the direcories in the folder processed data
 
-def DataProcessing():
-    path = os.path.dirname(os.path.realpath(__file__))
-    number = 0
-
-    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'OneBee')):
-        number += 1
-        if 'deg26' in filename:
-            dfProcessingSingle(filename, number, '26Degree')
-        elif 'deg36' in filename:
-            dfProcessingSingle(filename, number, '36Degree')
-
-    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'TwoBees')):
-        number += 1
-        if 'deg26' in filename:
-            dfProcessingTwo(filename, number, '26Degree')
-        elif 'deg36' in filename:
-            dfProcessingTwo(filename, number, '36Degree')
-
-    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'ThreeBees')):
-        number += 1
-        if 'deg26' in filename:
-            dfProcessingThree(filename, number, '26Degree')
-        elif 'deg36' in filename:
-            dfProcessingThree(filename, number, '36Degree')
-
-def CalcSocialTogether():
+    Returns:
+        np.ndarray: returns the times for social interaction for one, two and three bees for 26 and 36 degrees
+    """
     np_array_two_26 = np.array([])
     np_array_two_36 = np.array([])
     np_array_three_26 = np.array([])
@@ -63,7 +36,12 @@ def CalcSocialTogether():
 
     return np_array_two_26, np_array_two_36, np_array_three_26, np_array_three_36
 
-def CalcSpeed():
+def CalcSpeed() -> np.ndarray:
+    """calcualtes the speeds for all the files in the directories in the folder processed data
+
+    Returns:
+        np.ndarray: the speed values for one, two and three bees at 26 and 36 degrees
+    """
     path = os.path.dirname(os.path.realpath(__file__))
 
     speedOne26array = np.array([])
@@ -76,6 +54,7 @@ def CalcSpeed():
     for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'OneBee', '26Degree')):
         speedValues = speedOne26(filename)
         speedOne26array = np.hstack((speedOne26array, speedValues))
+        print(speedValues)
 
     for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'processedData', 'OneBee', '36Degree')):
         speedValues = speedOne36(filename)
@@ -102,7 +81,6 @@ def CalcSpeed():
 
 
 def main():
-    DataProcessing()
     np_array_two_26, np_array_two_36, np_array_three_26, np_array_three_36 = CalcSocialTogether()
     speedOne26array, speedOne36array, speedTwo26array, speedTwo36array, speedThree26array, speedThree36array = CalcSpeed()
 

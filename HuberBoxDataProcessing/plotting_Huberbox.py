@@ -4,35 +4,45 @@ import numpy as np
 
 import os
 
-def plot_speed_single(x_axis, data, filename):
-    path = os.path.dirname(os.path.realpath(__file__))
+def boxplot(
+    listA1: iter, listA2: iter, x_axis_A: iter, label_A: iter,
+    listB1: iter, listB2: iter, x_axis_B: iter, label_B: iter
+    ) -> plt.figure:
+    """creates a figure (boxplot) for the given data for the speed and the socail time for one, two and three bees+
 
+    Args:
+        listA1 (iter): social time for two and three bees at 26 degrees
+        listA2 (iter): social time for two and three bees at 36 degrees
+        x_axis_A (iter): np.arange(len(listA1)), gives the amount of x-ticks that are needed for the plot
+        label_A (iter): lables that should be ploted on the x-axis of the upper boxplot
+        listB1 (iter): speeds for one, two and three bees at 26 degrees
+        listB2 (iter): speeds for one, two and three bees at 36 degrees
+        x_axis_B (iter): np.arange(len(list(B1)), gives the amount of x-ticks that are needed for the plot
+        label_B (iter): lables that should be ploted on the x-axis of the lower boxplot
+
+    Returns:
+        plt.figure: save a figure with the two boxplots in the folder graphs
+    """
+    # seaborn standard config Toffifee
     sns.set()
     custom_params = {'axes.spines.right': False, 'axes.spines.top': False}
     sns.set_theme(style='ticks', rc=custom_params)
 
-    fig1, ax = plt.subplots(figsize=(20, 10))
-    ax.set_ylim(0, np.ceil(data[0]['distancePerSec'].max()))
-    ax.set_xlim(60, 660)
-    
-    for i in range(len(data)):    
-        plt.plot(x_axis, data[i]['distancePerSec'], color='k', linewidth=1)
-        
-    plt.savefig(os.path.join(path, 'graphs', filename))
-
-def boxplot(listA1, listA2, x_axis_A, label_A, listB1, listB2, x_axis_B, label_B):
     path = os.path.dirname(os.path.realpath(__file__))
     WIDTH = 0.25
     
-
+    # definition of the plot
     fig0, (ax0, ax1) = plt.subplots(2, 1, figsize=(12, 10))
     AXIS = (ax0, ax1)
+    # setting the y limits for the two graphs
     ax0.set_ylim(0, 22)
     ax1.set_ylim(0, 9)
     
+    # all settings that are needed for both plots
     for ax in AXIS:
         ax.grid(which='major', axis='y', linewidth=1, linestyle=(0, (1, 10)), color='black')
 
+    # plot of the social time for two and three bees at 26 degrees
     plota1 = ax0.boxplot(listA1, positions=x_axis_A - WIDTH/2 - 0.01, widths=WIDTH, notch=False, patch_artist=True,
                 boxprops=dict(facecolor='blue', color='k'),
                 capprops=dict(color='k'),
@@ -40,6 +50,7 @@ def boxplot(listA1, listA2, x_axis_A, label_A, listB1, listB2, x_axis_B, label_B
                 flierprops=dict(color='k', markeredgecolor='k'),
                 medianprops=dict(color='k'))
 
+    # plot of the social time for two and three bees at 36 degrees
     plota2 = ax0.boxplot(listA2, positions=x_axis_A + WIDTH/2 + 0.01, widths=WIDTH, notch=False, patch_artist=True,
                 boxprops=dict(facecolor='red', color='k'),
                 capprops=dict(color='k'),
@@ -47,6 +58,7 @@ def boxplot(listA1, listA2, x_axis_A, label_A, listB1, listB2, x_axis_B, label_B
                 flierprops=dict(color='k', markeredgecolor='k'),
                 medianprops=dict(color='k'))
 
+    # plot of the speeds for one, two and three bees at 26 degrees
     plotb1 = ax1.boxplot(listB1, positions=x_axis_B - WIDTH/2 - 0.01, widths=WIDTH, notch=False, patch_artist=True,
                 boxprops=dict(facecolor='blue', color='k'),
                 capprops=dict(color='k'),
@@ -54,6 +66,7 @@ def boxplot(listA1, listA2, x_axis_A, label_A, listB1, listB2, x_axis_B, label_B
                 flierprops=dict(color='k', markeredgecolor='k'),
                 medianprops=dict(color='k'))
 
+    # plot of the speeds for one, two and three bees at 26 degrees
     plotb2 = ax1.boxplot(listB2, positions=x_axis_B + WIDTH/2 + 0.01, widths=WIDTH, notch=False, patch_artist=True,
                 boxprops=dict(facecolor='red', color='k'),
                 capprops=dict(color='k'),
@@ -61,9 +74,10 @@ def boxplot(listA1, listA2, x_axis_A, label_A, listB1, listB2, x_axis_B, label_B
                 flierprops=dict(color='k', markeredgecolor='k'),
                 medianprops=dict(color='k'))
 
-
+    # setting the lables for the x_axis
     ax0.set_xticks(ticks=x_axis_A, labels=label_A, fontsize=14)
     ax1.set_xticks(ticks=x_axis_B, labels=label_B, fontsize=14)
+    # adding a legend for the given plots
     ax0.legend([plota1["boxes"][0], plota2["boxes"][0]], ['26 Degrees', '36 Degrees'], bbox_to_anchor=(1.005, 1), loc='upper left', fontsize=12)
 
     fig0.tight_layout()
