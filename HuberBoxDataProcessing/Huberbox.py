@@ -4,6 +4,7 @@ from ctypes.wintypes import tagRECT
 from matplotlib.pyplot import axis, plot
 import pandas as pd
 import scipy.stats as stats
+import numpy as np
 
 from OneBee import dfProcessingSingle
 from TwoBees import dfProcessingTwo
