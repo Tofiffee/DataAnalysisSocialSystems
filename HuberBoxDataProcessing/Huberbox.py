@@ -91,10 +91,10 @@ def TestNormalDistribution(DataList):
 def statisticalTesting(DataList):
     if DataList[2] == True:
         statistic, p_lev = stats.levene(DataList[0], DataList[1])
-        if p_lev <= 0.05:
+        if p_lev >= 0.05:
             statistic, p_val = stats.ttest_ind(DataList[0], DataList[1], equal_var=True, alternative='less')
             return f'The students-T-test with equal variance returns a p value of {p_val} with a statistic of {statistic}'
-        elif p_lev >= 0.05:
+        elif p_lev < 0.05:
             statistic, p_val = stats.ttest_ind(DataList[0], DataList[1], equal_var=False, alternative='less')
             return f'The students-T-test with no equal variance returns a p value of {p_val} with a statistic of {statistic}'
     elif DataList[2] == False:
