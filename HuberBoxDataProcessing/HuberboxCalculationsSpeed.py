@@ -58,12 +58,6 @@ def speedTwo26(filename: str) -> np.ndarray:
 
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '26Degree', filename), sep=';', encoding='utf-8')
 
-    # debuging code to look which entries are above a certain threshold
-    df_check = df[(df['distancePerSec1'] > 5) | (df['distancePerSec2'] > 5)]
-    print(df_check)
-    print(filename)
-
-    # extrakting speedvalues form pd.DataFrame and then remove all entries with the value 0
     speedValues1 = df['distancePerSec1'].to_numpy()
     speedValues2 = df['distancePerSec2'].to_numpy()
     speedValues = np.hstack((speedValues1, speedValues2))
@@ -85,12 +79,6 @@ def speedTwo36(filename: str) -> np.ndarray:
 
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree', filename), sep=';', encoding='utf-8')
 
-    # debuging code to look which entries are above a certain threshold
-    df_check = df[(df['distancePerSec1'] > 5) | (df['distancePerSec2'] > 5)]
-    print(df_check)
-    print(filename)
-
-    # extrakting speedvalues form pd.DataFrame and then remove all entries with the value 0
     speedValues1 = df['distancePerSec1'].to_numpy()
     speedValues2 = df['distancePerSec2'].to_numpy()
     speedValues = np.hstack((speedValues1, speedValues2))
