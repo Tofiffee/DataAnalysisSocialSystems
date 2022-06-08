@@ -2,11 +2,18 @@ from plotting_Casu1 import plotting_plot
 
 import pandas as pd
 
-def ReadData(): 
+def ReadData(url: str) -> pd.DataFrame: 
+    """    This function downloads the data from a GoogleTable sheet with the given link and transformes them into a 
+    csv and then reads them in into a pd.DataFrame
+
+    Args:
+        url (str): The URL of the datasheet were the data is stored on the GoogleDrive, the sheet needs to be shared via
+        link with the seeting that everybody with this link can edit. The Link you need for this function is the URL of 
+        the datasheet in the browser.
+
+    Returns:
+        pd.DataFrame: Returns a pandas DataFrame with the data from the first sheet for the GoogleTable spreedsheet
     """
-    This function downloads the data from a GoogleTable sheet with the given link and transformes them into a a csv file
-    """
-    url = 'https://docs.google.com/spreadsheets/d/11DkhIY7QQkUMNtjX1b16j7DmmQ6woKyCrGO_3p-Avig/edit#gid=0'
     url_read = url.replace('/edit#gid=', '/export?format=csv&gid=')
 
     df = pd.read_csv(url_read, on_bad_lines='skip')
@@ -48,7 +55,7 @@ def CalcMean(df):
 
 
 def main():
-    df = ReadData()
+    df = ReadData('https://docs.google.com/spreadsheets/d/11DkhIY7QQkUMNtjX1b16j7DmmQ6woKyCrGO_3p-Avig/edit#gid=0')
     data_list = DataPrepariation(df)
     mean_casu_1, mean_casu_2 = CalcMean(df)
 
