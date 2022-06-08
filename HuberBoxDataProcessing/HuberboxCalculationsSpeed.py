@@ -32,10 +32,6 @@ def speedTwo26(filename):
 
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '26Degree', filename), sep=';', encoding='utf-8')
 
-    df_check = df[(df['distancePerSec1'] > 5) | (df['distancePerSec2'] > 5)]
-    print(df_check)
-    print(filename)
-
     speedValues1 = df['distancePerSec1'].to_numpy()
     speedValues2 = df['distancePerSec2'].to_numpy()
     speedValues = np.hstack((speedValues1, speedValues2))
@@ -48,10 +44,6 @@ def speedTwo36(filename):
     path = os.path.dirname(os.path.realpath(__file__))
 
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '36Degree', filename), sep=';', encoding='utf-8')
-
-    df_check = df[(df['distancePerSec1'] > 5) | (df['distancePerSec2'] > 5)]
-    print(df_check)
-    print(filename)
 
     speedValues1 = df['distancePerSec1'].to_numpy()
     speedValues2 = df['distancePerSec2'].to_numpy()
@@ -67,10 +59,6 @@ def speedThree26(filename):
 
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees', '26Degree', filename), sep=';', encoding='utf-8')
 
-    df_check = df[(df['distancePerSec1'] > 5) | (df['distancePerSec2'] > 5) | (df['distancePerSec3'] > 5)]
-    print(df_check)
-    print(filename)
-
     speedValues1 = df['distancePerSec1'].to_numpy()
     speedValues2 = df['distancePerSec2'].to_numpy()
     speedValues3 = df['distancePerSec3'].to_numpy()
@@ -85,11 +73,6 @@ def speedThree36(filename):
     path = os.path.dirname(os.path.realpath(__file__))
 
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees', '36Degree', filename), sep=';', encoding='utf-8')
-
-
-    df_check = df[(df['distancePerSec1'] > 5) | (df['distancePerSec2'] > 5) | (df['distancePerSec3'] > 5)]
-    print(df_check)
-    print(filename)
 
     speedValues1 = df['distancePerSec1'].to_numpy()
     speedValues2 = df['distancePerSec2'].to_numpy()

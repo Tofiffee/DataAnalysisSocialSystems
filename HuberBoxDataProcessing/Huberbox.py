@@ -6,38 +6,9 @@ import pandas as pd
 import scipy.stats as stats
 import numpy as np
 
-from OneBee import dfProcessingSingle
-from TwoBees import dfProcessingTwo
-from ThreeBees import dfProcessingThree
 from HuberboxCalculationsTime import *
 from plotting_Huberbox import boxplot
 from HuberboxCalculationsSpeed import *
-
-
-def DataProcessing():
-    path = os.path.dirname(os.path.realpath(__file__))
-    number = 0
-
-    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'OneBee')):
-        number += 1
-        if 'deg26' in filename:
-            dfProcessingSingle(filename, number, '26Degree')
-        elif 'deg36' in filename:
-            dfProcessingSingle(filename, number, '36Degree')
-
-    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'TwoBees')):
-        number += 1
-        if 'deg26' in filename:
-            dfProcessingTwo(filename, number, '26Degree')
-        elif 'deg36' in filename:
-            dfProcessingTwo(filename, number, '36Degree')
-
-    for filename in os.listdir(os.path.join(os.path.dirname(path), 'data', 'ThreeBees')):
-        number += 1
-        if 'deg26' in filename:
-            dfProcessingThree(filename, number, '26Degree')
-        elif 'deg36' in filename:
-            dfProcessingThree(filename, number, '36Degree')
 
 def CalcSocialTogether():
     np_array_two_26 = np.array([])
@@ -98,13 +69,62 @@ def CalcSpeed():
         speedThree36array = np.hstack((speedThree36array, speedValues))
  
     return speedOne26array, speedOne36array, speedTwo26array, speedTwo36array, speedThree26array, speedThree36array
-        
 
+def TestNormalDistribution(DataList):
+    statistic1, p_shapiro1 = stats.shapiro(DataList[0])
+    statistic2, p_ks1 = stats.kstest(DataList[0], 'norm', mode='exact')
+    statistic3, p_shapiro2 = stats.shapiro(DataList[1])
+    statistic4, p_ks2 = stats.kstest(DataList[1], 'norm', mode='exact')
+
+    if p_shapiro1 >= 0.05 and p_ks1 >= 0.05 and p_shapiro2 >= 0.05 and p_ks2 >= 0.05:
+        DataList.append(True)
+        return DataList
+
+    elif p_shapiro1 < 0.05 or p_ks1 < 0.05 or p_shapiro2 < 0.05 or p_ks2 < 0.05:
+        DataList.append(False)
+        return DataList
+
+    elif p_ks1 >= 0.05 and p_ks2 >= 0.05:
+        DataList.append(True)
+        return DataList
+
+def statisticalTesting(DataList):
+    if DataList[2] == True:
+        statistic, p_lev = stats.levene(DataList[0], DataList[1])
+        if p_lev >= 0.05:
+            statistic, p_val = stats.ttest_ind(DataList[0], DataList[1], equal_var=True, alternative='less')
+            return f'The students-T-test with equal variance returns a p value of {p_val} with a statistic of {statistic}'
+        elif p_lev < 0.05:
+            statistic, p_val = stats.ttest_ind(DataList[0], DataList[1], equal_var=False, alternative='less')
+            return f'The students-T-test with no equal variance returns a p value of {p_val} with a statistic of {statistic}'
+    elif DataList[2] == False:
+        statistic, p_val = stats.mannwhitneyu(DataList[0], DataList[1], use_continuity=True, alternative='less')
+        return f'The MannWhitney-U test returns a p value of {p_val} with a statistic of {statistic}'
 
 def main():
-    DataProcessing()
     np_array_two_26, np_array_two_36, np_array_three_26, np_array_three_36 = CalcSocialTogether()
     speedOne26array, speedOne36array, speedTwo26array, speedTwo36array, speedThree26array, speedThree36array = CalcSpeed()
+
+    TestData = [
+        [np_array_two_26, np_array_two_36],
+        [np_array_two_26, np_array_three_26],
+        [np_array_two_36, np_array_three_36],
+        [np_array_three_26, np_array_three_36],
+        [speedOne26array, speedOne36array],
+        [speedTwo26array, speedTwo36array],
+        [speedThree26array, speedThree36array]
+        ]
+
+    for i in TestData:
+        i_modified = TestNormalDistribution(i)
+        result = statisticalTesting(i_modified)
+        print(result)
+
+    statistic, p_anova26 = stats.f_oneway(speedOne26array, speedTwo26array, speedThree26array)
+    statistic, p_anova36 = stats.f_oneway(speedOne36array, speedTwo36array, speedThree36array)
+
+    print(f'The anova for 26 degrees shows a p_value of {p_anova26}')
+    print(f'The anova for 26 degrees shows a p_value of {p_anova36}')
 
     plotA1 = [np_array_two_26, np_array_three_26]
     plotA2 = [np_array_two_36, np_array_three_36]
@@ -119,16 +139,6 @@ def main():
         listA1=plotA1, listA2=plotA2, x_axis_A=x_axis_A, label_A=labels_A,
         listB1=plotB1, listB2=plotB2, x_axis_B=x_axis_B, label_B=labels_B
         )
-        
-    for i in [
-        (np_array_two_26, np_array_two_36), 
-        (np_array_two_26, np_array_three_26), 
-        (np_array_two_26, np_array_three_36), 
-        (np_array_three_26, np_array_three_36)
-        ]:
-        W, p = stats.mannwhitneyu(i[0], i[1], use_continuity=True, alternative='less')
-        print(p)
-
 
 if __name__ == '__main__':
     main()
