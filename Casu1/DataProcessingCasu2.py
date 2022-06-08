@@ -97,12 +97,6 @@ TestDataDep = [
     [Temp_cont, noTemp_cont],
     [Temp, Bees]
 ]
-print(len(noTemp1_cont))
-print(len(noTemp2_cont))
-print(len(Temp_cont))
-print(len(noTemp_cont))
-print(len(Temp))
-print(len(Bees))
 
 for i in TestDataDep:
     i_modified = TestNormalDistribution(i)

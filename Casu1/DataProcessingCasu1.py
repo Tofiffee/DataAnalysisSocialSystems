@@ -1,5 +1,5 @@
-from plotting_Casu1 import plotting_plot
-
+from plotting_Casu import plotting_plot
+from DataProcessingCasu2 import labels, control1, control2, plot1, plot2
 import pandas as pd
 
 def ReadData(url: str) -> pd.DataFrame: 
@@ -59,7 +59,10 @@ def main():
     data_list = DataPrepariation(df)
     mean_casu_1, mean_casu_2 = CalcMean(df)
 
-    plotting_plot(data_list[0], data_list[1], data_list[2], mean_casu_1, mean_casu_2)
+    plotting_plot(
+        data_list[0], data_list[1], data_list[2], mean_casu_1, mean_casu_2,
+        control1, control2, plot1, plot2, labels
+    )
 
 
 if __name__=='__main__':
