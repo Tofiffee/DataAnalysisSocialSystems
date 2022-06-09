@@ -55,7 +55,7 @@ def CalcMean(df):
 
 
 def main():
-    df = ReadData('https://docs.google.com/spreadsheets/d/11DkhIY7QQkUMNtjX1b16j7DmmQ6woKyCrGO_3p-Avig/edit#gid=0')
+    df = ReadData('add DataURL')
     data_list = DataPrepariation(df)
     mean_casu_1, mean_casu_2 = CalcMean(df)
 

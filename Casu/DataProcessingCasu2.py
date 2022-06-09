@@ -79,9 +79,9 @@ def statisticalTestingIndependent(DataList):
         statistic, p_val = stats.mannwhitneyu(DataList[0], DataList[1], use_continuity=True, alternative='two-sided')
         return f'The MannWhitney-U test returns a p value of {p_val} with a statistic of {statistic}'
 
-df = ReadData('https://docs.google.com/spreadsheets/d/1c5eXRyP4uLSDKJ_1PHlx48nZ8wQ06mUr1Ayrty-kfDg/edit#gid=0')
-df_controlTemp = ReadData('https://docs.google.com/spreadsheets/d/1rtl7NfzKXGVWi90JLlAunum5BX6TK17NUiaficQs9q0/edit#gid=0')
-df_controlNoTemp = ReadData('https://docs.google.com/spreadsheets/d/1IzRJBgdS33K6GxaT-alZ26ywCZD9hzXSLbW1mHwKXsA/edit#gid=0')
+df = ReadData('add DataURL')
+df_controlTemp = ReadData('add DataURL')
+df_controlNoTemp = ReadData('add DataURL')
 
 Temp, Bees = dfProcessing(df, 6, 'Temp', 'Bienen')
 Temp_cont, noTemp_cont = dfProcessing(df_controlTemp, 5, 'CasuT', 'CasunT')
