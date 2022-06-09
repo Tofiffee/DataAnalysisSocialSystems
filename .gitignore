@@ -1,5 +1,7 @@
 venv/
+Casu/__pycache__
 .vscode
 data
 __pycache__
-graphs
+graphs/*.png
+
