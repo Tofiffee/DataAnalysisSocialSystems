@@ -19,14 +19,18 @@ def plotting_plot(
     WIDTH = 0.25
 
     fig1 = plt.figure(figsize=(20, 15))
-    ax = plt.subplot(2, 3, (1, 3))
-    ax0 = plt.subplot(2, 3, (4, 5))
+    ax = plt.subplot(2, 10, (2, 10))
+    ax0 = plt.subplot(2, 10, (12, 17))
     ax.set_xlim(10, 960)
     ax.set_ylim(0, 10)
     ax.xaxis.set_major_locator(MultipleLocator(60))
     ax.set_ylabel('Number of bees', fontsize=20, labelpad=10)
     ax.set_xlabel('Time [s]', fontsize=20, labelpad=10)
-
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax0.tick_params(axis='y', which='major', labelsize=16)
+    ax.text(-35, 8.5, 'A', fontdict={'fontsize': 45})
+    ax0.text(-0.9, 90, 'B', fontdict={'fontsize': 45})
+    
     for i in y_casu_1:
         ax.plot(x_axis, i, color='red', alpha=0.5, linewidth=0.5, linestyle=(0, (5, 5)))
 

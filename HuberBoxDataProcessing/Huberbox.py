@@ -116,7 +116,7 @@ def main():
     TestData = [
         [np_array_two_26, np_array_two_36],
         [np_array_two_26, np_array_three_26],
-        [np_array_two_36, np_array_three_36],
+        [np_array_three_36, np_array_two_36],
         [np_array_three_26, np_array_three_36],
         [speedOne26array, speedOne36array],
         [speedTwo26array, speedTwo36array],
@@ -132,7 +132,7 @@ def main():
     statistic, p_anova36 = stats.f_oneway(speedOne36array, speedTwo36array, speedThree36array)
 
     print(f'The anova for 26 degrees shows a p_value of {p_anova26}')
-    print(f'The anova for 26 degrees shows a p_value of {p_anova36}')
+    print(f'The anova for 36 degrees shows a p_value of {p_anova36}')
 
     plotA1 = [np_array_two_26, np_array_three_26]
     plotA2 = [np_array_two_36, np_array_three_36]

@@ -38,7 +38,7 @@ def boxplot(
     fig0, (ax0, ax1) = plt.subplots(2, 1, figsize=(12, 10))
     AXIS = (ax0, ax1)
     ax0.set_ylim(0, 25)
-    ax1.set_ylim(0, 9)
+    ax1.set_ylim(0, 7)
     
     # all settings that are needed for both plots
     for ax in AXIS:
@@ -87,6 +87,27 @@ def boxplot(
     ax1.annotate('***', xy=(0, 5.5), xytext=(0, 0), textcoords='offset points', ha='center', va='bottom', fontsize=25)
     ax1.annotate('***', xy=(1, 5.5), xytext=(0, 0), textcoords='offset points', ha='center', va='bottom', fontsize=25)
     ax1.annotate('***', xy=(2, 5.5), xytext=(0, 0), textcoords='offset points', ha='center', va='bottom', fontsize=25)
+    ax0.text(-0.85, 21, 'A', fontdict={'fontsize': 45})
+    ax1.text(-0.9, 6.1, 'B', fontdict={'fontsize': 45})
+    ax0.tick_params(axis='y', which='major', labelsize=16)
+    ax1.tick_params(axis='y', which='major', labelsize=16)
+    
+    ax0.text(-0.19, 11, 'N=11', fontdict={'fontsize': 16})
+    ax0.text(0.08, 22, 'N=11', fontdict={'fontsize': 16})
+    ax0.text(0.82, 6, 'N=6', fontdict={'fontsize': 16})
+    ax0.text(1.09, 5, 'N=6', fontdict={'fontsize': 16})
+
+    ax1.text(-0.3, 2.4, 'N=6', fontdict={'fontsize': 16})
+    ax1.text(0.18, 3, 'N=5', fontdict={'fontsize': 16})
+    
+    ax1.text(0.65, 2.3, 'N=22', fontdict={'fontsize': 16})
+    ax1.text(1.18, 2.8, 'N=22', fontdict={'fontsize': 16})
+    
+    ax1.text(1.7, 2.1, 'N=6', fontdict={'fontsize': 16})
+    ax1.text(2.18, 2.4, 'N=6', fontdict={'fontsize': 16})
+
+
+
 
     fig0.tight_layout()
     plt.savefig(os.path.join(os.path.dirname(path), 'graphs', 'Boxplot_TimeTogether.png'))
