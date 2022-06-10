@@ -1,6 +1,6 @@
 from plotting_Casu import plotting_plot
-from DataProcessingCasu2 import plotBees, plotTemp, plotNoTempCont, plotTempCont
 import os
+from Statistics import StatisticalTesting
 
 import pandas as pd
 import numpy as np
@@ -52,47 +52,7 @@ def CalcMean(df, list1, list2, BeeNumber):
     df1['mean'] = df1['mean'].apply(lambda x: x/BeeNumber * 100 if x != 0 else x)
     df2['mean'] = df2['mean'].apply(lambda x: x/BeeNumber * 100 if x != 0 else x)
   
-    return df1['mean'], df2['mean']
-
-def TestNormalDistribution(DataList):
-    statistic1, p_shapiro1 = stats.shapiro(DataList[0])
-    statistic2, p_ks1 = stats.kstest(DataList[0], 'norm', mode='exact')
-    statistic3, p_shapiro2 = stats.shapiro(DataList[1])
-    statistic4, p_ks2 = stats.kstest(DataList[1], 'norm', mode='exact')
-
-    if p_shapiro1 >= 0.05 and p_ks1 >= 0.05 and p_shapiro2 >= 0.05 and p_ks2 >= 0.05:
-        DataList.append(True)
-        return DataList
-
-    elif p_shapiro1 < 0.05 or p_ks1 < 0.05 or p_shapiro2 < 0.05 or p_ks2 < 0.05:
-        DataList.append(False)
-        return DataList
-
-    elif p_ks1 >= 0.05 and p_ks2 >= 0.05:
-        DataList.append(True)
-        return DataList
-
-def statisticalTestingDependent(DataList):
-    if DataList[2] == True:
-        statistic, p_val = stats.ttest_rel(DataList[0], DataList[1], alternative='two-sided')
-        return f'The students-T-test for dependent dataset returns a p value of {p_val} with a statistic of {statistic}'
-    elif DataList[2] == False:
-        statistic, p_val = stats.wilcoxon(DataList[0], DataList[1], zero_method='pratt', alternative='two-sided')
-        return f'The Wilcoxen-Pratt signed rank test returns a p value of {p_val} with a statistic of {statistic}'
-
-def statisticalTestingIndependent(DataList):
-    if DataList[2] == True:
-        statistic, p_lev = stats.levene(DataList[0], DataList[1])
-        if p_lev >= 0.05:
-            statistic, p_val = stats.ttest_ind(DataList[0], DataList[1], equal_var=True, alternative='two-sided')
-            return f'The students-T-test with equal variance returns a p value of {p_val} with a statistic of {statistic}'
-        elif p_lev < 0.05:
-            statistic, p_val = stats.ttest_ind(DataList[0], DataList[1], equal_var=False, alternative='two-sided')
-            return f'The students-T-test with no equal variance returns a p value of {p_val} with a statistic of {statistic}'
-    elif DataList[2] == False:
-        statistic, p_val = stats.mannwhitneyu(DataList[0], DataList[1], use_continuity=True, alternative='two-sided')
-        return f'The MannWhitney-U test returns a p value of {p_val} with a statistic of {statistic}'
-
+    return df1, df2
 
 def main():
     df = ReadData('https://docs.google.com/spreadsheets/d/11DkhIY7QQkUMNtjX1b16j7DmmQ6woKyCrGO_3p-Avig/edit#gid=0')
@@ -106,7 +66,6 @@ def main():
     ['danach_A1', 'danach_A2',	'danach_A3', 'danach_A4', 'danach_A5', 'danach_A6', 'danach_A7', 'danach_B1', 'danach_B2', 'danach_B3', 'danach_B4', 'danach_B5', 'danach_B6', 'danach_B7',	'danach_C1', 'danach_C2', 'danach_C3', 'danach_C4'],
     100
     )
-
     plotBees, plotTemp = CalcMean(
         df_Temp,
         ['Bienen_A1', 'Bienen_A2', 'Bienen_B1', 'Bienen_B2', 'Bienen_D1', 'Bienen_D2', 'Bienen_D3','Bienen_D4', 'Bienen_E1', 'Bienen_F1', 'Bienen_F2', 'Bienen_F3', 'Bienen_F4'],
@@ -120,13 +79,26 @@ def main():
         5
         )
 
-    print(plotNoTempCont)
+    print(plotBees.iloc[-1]['mean'])
 
     plotting_plot(
-        data_list[0], data_list[1], data_list[2], mean_casu1, mean_casu2,
-        plotBees, plotTemp, plotNoTempCont, plotTempCont
+        data_list[0], data_list[1], data_list[2], mean_casu1['mean'], mean_casu2['mean'],
+        plotBees['mean'], plotTemp['mean'], plotNoTempCont['mean'], plotTempCont['mean'],
+        [plotNoTempCont.iloc[-1]['mean'], plotBees.iloc[-1]['mean']],
+        [plotTempCont.iloc[-1]['mean'], plotTemp.iloc[-1]['mean']],
+        ['noTemp vs Temp', 'Bees vs Temp']
         )
+    
+    testData = [{
+        'Data1': plotBees.iloc[-1].tolist()[:-1],
+        'Data2': plotTemp.iloc[-1].tolist()[:-1],
+        'dependent': True,
+        'alternativ': 'two-sided'        
+        }
+        ]
 
+    result = StatisticalTesting(testData[0])
+    print(result)
 
 if __name__=='__main__':
     main()
