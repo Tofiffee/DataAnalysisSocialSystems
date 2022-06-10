@@ -95,6 +95,16 @@ def dfProcessingThree(filename: str, number: int, deg: str) -> pd.DataFrame:
     df['BeesClose1_2_3'] = df['meanDist'].apply(lambda x: 1 if x <= 2.2 else 0)
     df['socialTogether'] = df.apply(lambda x: socialTogether(x['BeeNotMove1'], x['BeeNotMove2'], 
     x['BeeNotMove3'], x['BeesClose1_2_3']), axis=1)
+    df['socialTogetherTwo'] = df.apply(lambda x: socialTogetherTwo(
+        x['BeeNotMove1'], 
+        x['BeeNotMove2'], 
+        x['BeeNotMove3'], 
+        x['BeesClose1_2'], 
+        x['BeesClose1_3'], 
+        x['BeesClose2_3']
+        ),
+        axis=1
+        )
 
     df = df[:-1]
 
@@ -113,6 +123,16 @@ def calcDistanceAngle(rad1, rad2):
 
 def socialTogether(BeeNotMove1, BeeNotMove2, BeeNotMove3, BeesClose1_2_3):
     if BeeNotMove1 == 1 and BeeNotMove2 == 1 and BeeNotMove3 == 1 and BeesClose1_2_3 == 1:
+        return 1
+    else:
+        return 0
+
+def socialTogetherTwo(BeeNotMove1, BeeNotMove2, BeeNotMove3, BeesClose1_2, BeesClose1_3, BeesClose2_3):
+    if BeeNotMove1 == 1 and BeeNotMove2 == 1 and BeesClose1_2 == 1:
+        return 1
+    elif BeeNotMove1 == 1 and BeeNotMove3 == 1 and BeesClose1_3 == 1:
+        return 1
+    elif BeeNotMove2 == 1 and BeeNotMove3 == 1 and BeesClose2_3 == 1:
         return 1
     else:
         return 0

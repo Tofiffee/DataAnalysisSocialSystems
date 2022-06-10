@@ -37,7 +37,7 @@ def boxplot(
 
     fig0, (ax0, ax1) = plt.subplots(2, 1, figsize=(12, 10))
     AXIS = (ax0, ax1)
-    ax0.set_ylim(0, 25)
+    ax0.set_ylim(0, 80)
     ax1.set_ylim(0, 7)
     
     # all settings that are needed for both plots
@@ -92,19 +92,21 @@ def boxplot(
     ax0.tick_params(axis='y', which='major', labelsize=16)
     ax1.tick_params(axis='y', which='major', labelsize=16)
     
-    ax0.text(-0.19, 11, 'N=11', fontdict={'fontsize': 16})
-    ax0.text(0.08, 22, 'N=11', fontdict={'fontsize': 16})
-    ax0.text(0.82, 6, 'N=6', fontdict={'fontsize': 16})
-    ax0.text(1.09, 5, 'N=6', fontdict={'fontsize': 16})
+    ax0.text(-0.2, 11, 'n=11', fontdict={'fontsize': 16})
+    ax0.text(0.08, 22, 'n=11', fontdict={'fontsize': 16})
+    ax0.text(0.82, 16, 'n=6', fontdict={'fontsize': 16})
+    ax0.text(1.08, 18, 'n=6', fontdict={'fontsize': 16})
+    ax0.text(1.8, 6, 'n=6', fontdict={'fontsize': 16})
+    ax0.text(2.08, 5, 'n=6', fontdict={'fontsize': 16})
 
-    ax1.text(-0.3, 2.4, 'N=6', fontdict={'fontsize': 16})
-    ax1.text(0.18, 3, 'N=5', fontdict={'fontsize': 16})
+    ax1.text(-0.3, 2.4, 'n=6', fontdict={'fontsize': 16})
+    ax1.text(0.18, 3, 'n=5', fontdict={'fontsize': 16})
     
-    ax1.text(0.65, 2.3, 'N=22', fontdict={'fontsize': 16})
-    ax1.text(1.18, 2.8, 'N=22', fontdict={'fontsize': 16})
+    ax1.text(0.65, 2.3, 'n=22', fontdict={'fontsize': 16})
+    ax1.text(1.18, 2.8, 'n=22', fontdict={'fontsize': 16})
     
-    ax1.text(1.7, 2.1, 'N=6', fontdict={'fontsize': 16})
-    ax1.text(2.18, 2.4, 'N=6', fontdict={'fontsize': 16})
+    ax1.text(1.7, 2.1, 'n=6', fontdict={'fontsize': 16})
+    ax1.text(2.18, 2.4, 'n=6', fontdict={'fontsize': 16})
 
 
 

@@ -19,12 +19,6 @@ def claculationsTwo26(filename: str) -> np.ndarray:
 
     # reads in the data from the processed data dir
     df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'TwoBees', '26Degree', filename), sep=';', encoding='utf-8')
-    
-    # debuggin code for appending time spend together
-    try:
-        together_two_26.append(df['BeesTogether'].sum()*0.2)
-    except KeyError:
-        print(filename)
 
     # cycle trough social contact to look how long the social contact is
     socialContact = df['socialTogether'].to_numpy()
@@ -63,12 +57,6 @@ def claculationsTwo36(filename: str) -> np.ndarray:
     sep=';', 
     encoding='utf-8'
     )
-    
-    # debuggin code for appending time spend together
-    try:
-        together_two_36.append(df['BeesTogether'].sum()*0.2)
-    except KeyError:
-        print(filename)
 
     # cycle trough social contact to look how long the social contact is
     socialContact = df['socialTogether'].to_numpy()
@@ -107,12 +95,6 @@ def claculationsThree26(filename: str) -> np.ndarray:
     sep=';', 
     encoding='utf-8'
     )
-    
-    # debuggin code for appending time spend together
-    try:
-        together_three_26.append(df['BeesClose1_2_3'].sum()*0.2)
-    except KeyError:
-        print(filename)
 
     # cycle trough social contact to look how long the social contact is
     socialContact = df['socialTogether'].to_numpy()
@@ -152,12 +134,6 @@ def claculationsThree36(filename: str) -> np.ndarray:
     sep=';', 
     encoding='utf-8'
     )
-    
-    # debuggin code for appending time spend together
-    try:
-        together_three_36.append(df['BeesClose1_2_3'].sum()*0.2)
-    except KeyError:
-        print(filename)
 
     # cycle trough social contact to look how long the social contact is
     socialContact = df['socialTogether'].to_numpy()
@@ -179,3 +155,79 @@ def claculationsThree36(filename: str) -> np.ndarray:
     socialTogether_three_36 = np.setdiff1d(socialTogether_three_36, np.array([0.2, 0.4, 0.6, 0.8]))
 
     return socialTogether_three_36
+
+def claculationsThree26Two(filename: str) -> np.ndarray:
+    """This function calculates the time the bees spent together as well as the social time the bees spend together
+
+    Args:
+        filename (str): the file that should be processed from the given folder
+
+    Returns:
+        np.ndarray: array of the durations of social contacts in one experimental run
+    """
+    socialTogether_three_26_Two = []
+
+    # reads in the data from the processed data dir
+    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees', '26Degree', filename), 
+    sep=';', 
+    encoding='utf-8'
+    )
+
+    # cycle trough social contact to look how long the social contact is
+    socialContact = df['socialTogetherTwo'].to_numpy()
+    counter = 0
+
+    for i in socialContact:
+        if i == 1:
+            counter += 1
+        elif i == 0:
+            if counter != 0:
+                socialTogether_three_26_Two.append(counter)
+                counter = 0
+            elif counter == 0:
+                pass
+    
+    # transformes timespeps of social contact to seconds
+    socialTogether_three_26_Two = np.array(socialTogether_three_26_Two) * 0.2
+    # removes all social contacts with duration less then 1 second
+    socialTogether_three_26_Two = np.setdiff1d(socialTogether_three_26_Two, np.array([0.2, 0.4, 0.6, 0.8]))
+
+    return socialTogether_three_26_Two
+
+def claculationsThree36Two(filename: str) -> np.ndarray:
+    """This function calculates the time the bees spent together as well as the social time the bees spend together
+
+    Args:
+        filename (str): the file that should be processed from the given folder
+
+    Returns:
+        np.ndarray: array of the durations of social contacts in one experimental run
+    """
+    socialTogether_three_36_Two = []
+
+    # reads in the data from the processed data dir
+    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'processedData', 'ThreeBees', '36Degree', filename), 
+    sep=';', 
+    encoding='utf-8'
+    )
+
+    # cycle trough social contact to look how long the social contact is
+    socialContact = df['socialTogetherTwo'].to_numpy()
+    counter = 0
+    
+    for i in socialContact:
+        if i == 1:
+            counter += 1
+        elif i == 0:
+            if counter != 0:
+                socialTogether_three_36_Two.append(counter)
+                counter = 0
+            elif counter == 0:
+                pass
+    
+    # transformes timespeps of social contact to seconds
+    socialTogether_three_36_Two = np.array(socialTogether_three_36_Two) * 0.2
+    # removes all social contacts with duration less then 1 second
+    socialTogether_three_36_Two = np.setdiff1d(socialTogether_three_36_Two, np.array([0.2, 0.4, 0.6, 0.8]))
+
+    return socialTogether_three_36_Two
