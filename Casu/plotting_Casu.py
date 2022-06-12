@@ -51,8 +51,6 @@ def plotting_plot(
     ax1.plot(x_axis, plotNoTempCont, color='lightsteelblue', linewidth=1.5)
     ax1.plot(x_axis, plotTempCont, color='lightcoral', linewidth=1.5)
 
-
-    ax1.legend(loc='upper right', fontsize=16)
     ax1.set_ylabel('Bees [%]', labelpad=10, fontsize=25)
     ax1.set_xlabel('Time [s]', labelpad=10, fontsize=25)
     ax1.tick_params(axis='y', which='major', labelsize=16)

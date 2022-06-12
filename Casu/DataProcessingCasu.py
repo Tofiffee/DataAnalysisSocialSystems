@@ -55,9 +55,9 @@ def CalcMean(df, list1, list2, BeeNumber):
     return df1, df2
 
 def main():
-    df = ReadData('insert dataURL')
-    df_Temp = ReadData('insert dataURL')
-    df_controlTemp = ReadData('insert dataURL')
+    df = ReadData('https://docs.google.com/spreadsheets/d/11DkhIY7QQkUMNtjX1b16j7DmmQ6woKyCrGO_3p-Avig/edit#gid=0')
+    df_Temp = ReadData('https://docs.google.com/spreadsheets/d/1c5eXRyP4uLSDKJ_1PHlx48nZ8wQ06mUr1Ayrty-kfDg/edit#gid=0')
+    df_controlTemp = ReadData('https://docs.google.com/spreadsheets/d/1rtl7NfzKXGVWi90JLlAunum5BX6TK17NUiaficQs9q0/edit#gid=0')
     
     data_list = DataPrepariation(df)
     mean_casu1, mean_casu2 = CalcMean(
