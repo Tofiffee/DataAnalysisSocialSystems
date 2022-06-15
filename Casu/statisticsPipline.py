@@ -1,10 +1,27 @@
+from multiprocessing.sharedctypes import Value
 import scipy.stats as stats
+import pandas as pd
+import numpy as np
 
 def TestNormalDistribution(DataDict):
+    if type(DataDict['Data1']) == pd.DataFrame:
+        Data1 = DataDict['Data1'].to_numpy()
+        Data2 = DataDict['Data2'].to_numpy()
+    elif type(DataDict['Data1']) == np.ndarray:
+        Data1 = DataDict['Data1']
+        Data2 = DataDict['Data2']
+    else:
+        raise ValueError('Data1 and Data2 have to be either pd.DataFrame with 1 column or np.ndarray')
+
+    testData1 = (Data1-Data1.mean())/Data1.std()
+    testData2 = (Data2-Data2.mean())/Data2.std()
+
     statistic1, p_shapiro1 = stats.shapiro(DataDict['Data1'])
-    statistic2, p_ks1 = stats.kstest(DataDict['Data1'], 'norm', mode='exact')
     statistic3, p_shapiro2 = stats.shapiro(DataDict['Data2'])
-    statistic4, p_ks2 = stats.kstest(DataDict['Data2'], 'norm', mode='exact')
+
+    statistic2, p_ks1 = stats.kstest(testData1, 'norm')
+    statistic4, p_ks2 = stats.kstest(testData2, 'norm')
+
     andersonResult1 = stats.anderson(DataDict['Data1'], dist='norm')
     andersonResult2 = stats.anderson(DataDict['Data2'], dist='norm')
 
