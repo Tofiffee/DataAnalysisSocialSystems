@@ -18,7 +18,7 @@ def dfProcessingSingle(filename: str, number: int, deg: str) -> pd.DataFrame:
     """
     path = os.path.dirname(os.path.realpath(__file__)) #generates path to this file
 
-    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'OneBee', filename)) #reads in basedata from given directory
+    df = pd.read_excel(os.path.join(os.path.dirname(path), 'data', 'OneBee', filename)) #reads in basedata from given directory
     
     df_new = df.drop(df.index[0]) #creates a new dataframe were the first line gets deleted
     df_new.loc[len(df_new)+1] = 0 #sets the last line of the new dataframe to zero in all columns

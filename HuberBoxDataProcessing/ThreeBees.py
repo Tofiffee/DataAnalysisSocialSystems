@@ -19,7 +19,7 @@ def dfProcessingThree(filename: str, number: int, deg: str) -> pd.DataFrame:
 
     path = os.path.dirname(os.path.realpath(__file__))
 
-    df = pd.read_csv(os.path.join(os.path.dirname(path), 'data', 'ThreeBees', filename))
+    df = pd.read_excel(os.path.join(os.path.dirname(path), 'data', 'ThreeBees', filename))
     
     #creates a new dataframe were the first line gets deleted and sets the last line as zero then resets the index
     df_new = df.drop(df.index[0])

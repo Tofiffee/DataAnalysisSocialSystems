@@ -1,6 +1,6 @@
 from plotting_Casu import plotting_plot
 import os
-from Statistics import StatisticalTesting
+from statisticsPipline import StatisticalTesting
 
 import pandas as pd
 import numpy as np
@@ -89,16 +89,18 @@ def main():
         ['noTemp vs Temp', 'Bees vs Temp']
         )
     
-    testData = [{
-        'Data1': plotBees.iloc[-1].tolist()[:-1],
-        'Data2': plotTemp.iloc[-1].tolist()[:-1],
-        'dependent': True,
-        'alternativ': 'two-sided'        
-        }
+    testData = [
+        {'Data1': np.array(plotBees.iloc[-1].tolist()[:-1]), 'Data2': np.array(plotTemp.iloc[-1].tolist()[:-1]), 
+        'dependent': True, 'alternativ': 'less', 'name': 'beesvstemp'},
+        {'Data1': np.array(plotNoTempCont.iloc[-1].tolist()[:-1]), 'Data2': np.array(plotTempCont.iloc[-1].tolist()[:-1]), 
+        'dependent': True, 'alternativ': 'less', 'name': 'tempvsnobees'},
+        {'Data1': np.array(plotNoTempCont.iloc[-1].tolist()[:-1]), 'Data2': np.array(plotBees.iloc[-1].tolist()[:-1]), 
+        'dependent': False, 'alternativ': 'less', 'name': 'beesvsnotemp'}
         ]
 
-    result = StatisticalTesting(testData[0])
-    print(result)
+    for i in testData:
+        result = StatisticalTesting(i)
+        print(result)
 
 if __name__=='__main__':
     main()
