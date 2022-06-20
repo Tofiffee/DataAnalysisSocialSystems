@@ -52,10 +52,10 @@ def plotting_plot(
     ax1 = plt.subplot(1, 1, 1)
     ax1.set_ylim(0, 100)
 
-    ax1.plot(x_axis, plotBees, color='blue', linewidth=1.5)
-    ax1.plot(x_axis, plotTemp, color='red', linewidth=1.5)
-    ax1.plot(x_axis, plotNoTempCont, color='lightsteelblue', linewidth=1.5)
-    ax1.plot(x_axis, plotTempCont, color='lightcoral', linewidth=1.5)
+    ax1.plot(x_axis, plotBees, color='blue', linewidth=1.5, label='26 degree no s-bees')
+    ax1.plot(x_axis, plotTemp, color='red', linewidth=1.5, label='36 degree no s-bees')
+    ax1.plot(x_axis, plotNoTempCont, color='lightsteelblue', linewidth=1.5, label='26 degree with s-bees')
+    ax1.plot(x_axis, plotTempCont, color='lightcoral', linewidth=1.5, label='36 degree no s-bees')
 
 
     ax1.legend(loc='upper right', fontsize=16)
@@ -63,6 +63,7 @@ def plotting_plot(
     ax1.set_xlabel('Time [s]', labelpad=10, fontsize=25)
     ax1.tick_params(axis='y', which='major', labelsize=16)
     ax1.text(-0.9, 90, 'B', fontdict={'fontsize': 45})
+    ax1.legend(loc='center right', fontsize=20)
 
     fig2.tight_layout()
     plt.savefig(os.path.join(path, '..', 'graphs', 'Casu2.png'))
