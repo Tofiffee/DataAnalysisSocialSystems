@@ -19,8 +19,8 @@ def plotting_plot(
     sns.set_theme(style='ticks', rc=custom_params)
     WIDTH = 0.25
 
-    fig1 = plt.figure(figsize=(20, 15))
-    ax0 = plt.subplot(2, 11, (1, 11))
+    fig1 = plt.figure(figsize=(20, 10))
+    ax0 = plt.subplot(1, 1, 1)
     ax0.set_xlim(10, 960)
     ax0.set_ylim(0, 10)
     ax0.xaxis.set_major_locator(MultipleLocator(60))
@@ -43,7 +43,13 @@ def plotting_plot(
     ax0.vlines(320, 0, 11, colors='k', linestyles='dashed')
     ax0.legend(loc='center right', fontsize=16)
 
-    ax1 = plt.subplot(2, 11, (12, 16))
+    fig1.tight_layout()
+    plt.savefig(os.path.join(path, '..', 'graphs', 'Casu1.png'))
+    
+
+    fig2 = plt.figure(figsize=(20, 10))
+
+    ax1 = plt.subplot(1, 1, 1)
     ax1.set_ylim(0, 100)
 
     ax1.plot(x_axis, plotBees, color='blue', linewidth=1.5)
@@ -58,10 +64,14 @@ def plotting_plot(
     ax1.tick_params(axis='y', which='major', labelsize=16)
     ax1.text(-0.9, 90, 'B', fontdict={'fontsize': 45})
 
+    fig2.tight_layout()
+    plt.savefig(os.path.join(path, '..', 'graphs', 'Casu2.png'))
+    
+    fig3 = plt.figure(figsize=(10, 10))
     x_bar = np.arange(len(labels))
     WIDTH = 0.25
     
-    ax2 = plt.subplot(2, 11, (17, 21))
+    ax2 = plt.subplot(1, 1, 1)
     ax2.set_ylim(0, 100)
 
     ax2.bar(x_bar - WIDTH/2, [bar1[0], 0], WIDTH, color='lightsteelblue', label='26 degree no s-bees')
@@ -81,7 +91,7 @@ def plotting_plot(
     
     x1, x2, y, h, col = -0.125, 0.875, 17, 2, 'k'
     ax2.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=2, c=col)
-    ax2.text((x1+x2)*.5, y+h, "***", ha='center', va='bottom', color=col, fontsize=30)
+    ax2.text((x1+x2)*.5, y+h, "n.s.", ha='center', va='bottom', color=col, fontsize=20)
 
     ax2.text(-0.3, 90, 'C', fontdict={'fontsize': 45})
     ax2.text(-0.1875, 3, 'n=8', fontdict={'fontsize': 16})
@@ -101,7 +111,7 @@ def plotting_plot(
     # ax0.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=2, c=col)
     # ax0.text((x1+x2)*.5, y+h, "***", ha='center', va='bottom', color=col, fontsize=30)
 
-    fig1.tight_layout()
-    plt.savefig(os.path.join(path, '..', 'graphs', 'casuexp_1_line_plot.png'))
+    fig3.tight_layout()
+    plt.savefig(os.path.join(path, '..', 'graphs', 'CASU3.png'))
 
 
