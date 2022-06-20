@@ -94,7 +94,7 @@ def main():
 
     TestData = [
         {'Data1': np_array_two_26, 'Data2': np_array_two_36, 'alternativ': 'less', 'dependent': False, 'name': 'two26vs36'},
-        {'Data1': np_array_three_26_Two, 'Data2': np_array_three_36_Two, 'alternativ': 'less', 'dependent': False, 'name': 'three26vs36'},
+        {'Data1': np_array_three_26_Two, 'Data2': np_array_three_36_Two, 'alternativ': 'greater', 'dependent': False, 'name': 'three26vs36'},
         {'Data1': np_array_three_26, 'Data2': np_array_two_36, 'alternativ': 'less', 'dependent': False, 'name':'three26vstwo36'},
         ]
 
