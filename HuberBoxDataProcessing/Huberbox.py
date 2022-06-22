@@ -6,7 +6,7 @@ import numpy as np
 from HuberboxCalculationsTime import *
 from plotting_Huberbox import boxplot
 from HuberboxCalculationsSpeed import *
-from Statistics import StatisticalTesting
+from statisticsPipline import StatisticalTesting
 
 def CalcSocialTogether() ->  np.ndarray:
     """calculates all the social times for all the files in the direcories in the folder processed data

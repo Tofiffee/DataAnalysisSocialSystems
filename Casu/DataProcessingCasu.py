@@ -1,6 +1,6 @@
 from plotting_Casu import plotting_plot
 import os
-from Statistics import StatisticalTesting
+from statisticsPipline import StatisticalTesting
 
 import pandas as pd
 import numpy as np
